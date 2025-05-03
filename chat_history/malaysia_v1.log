@@ -1,0 +1,61 @@
+curl "https://api.llama.com/v1/chat/completions" \
+  -H 'Accept: text/event-stream'  \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $LLAMA_API_KEY" \
+  -d '{
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAiBJREFUaEPtWU1KQ0EMnt7DG1RpeSIqLryH4qIoFIoLQY+h4EIKBUsXovdwIepGLOp5lAgDY5jJzzTvD99blpkkX/Ilk6S9tX7x7Vr89ToANUevi0DNAXD/JwIXpxNXDAdusLFeqtOXH5/u7X3pLm+mIj1sBPZ3d9z0+kokzPrQ5OzcPT6/kGJZAF+vT9Z2qeRxIEgAQJvR0aFKofXhlQA83M7+cH5xdy/mZi4Q7DTIiYOTcVIcGQFMn/72Xq5dqnsavUkAseStCwBFIzEALpQqFzOHMXWzAGAuxvgfnrHMj0oAxCqUFQiJ83wQkxTihKTeB4s8wflH0TcJgAtj6wGUSaFKIgAcLCuJTQBoHhPLEuplSfUnc0AqoAzjQaZUf+UAgB7j49Fvj0WV3UYC0CR+4wBQrXksEo0CIJkrMIiVAeCHDL+wnsuQcNQMKzHeF4IQhDmAsCOUcjllPBgKX2za8yBKA8B51BtAGe83Dqkz0PuE2w+zXmhrsxDNyNiAGEX8b5xD4FwWgNhsGtsJpYzFDxxV8zkQJgBiLy5HF8rzWJ62zKrnAYlHpcmdaj8keYPvimfi8CJHB1hBwjebL9jNmiQSlD41AKuxkWoCuWEqvKsCUIXxsU40ayuhaWmtW2rpIwZ6yc1c61eLda7WpSWYjEATAHBrGvb/gTpBcKt1NgfC5GztX0zWFcZaHksha4XW8joA1h7VyusioPWY9fkfQM0LzylMtisAAAAASUVORK5CYII="
+            }
+          },
+          {
+            "type": "text",
+            "text": "Tell me about the distinctive features in this picture that help determine what country this is in. Determine which side of road people are driving on in the picture, then eliminate countries that don'\''t match that information according to the following json dictionary:\n{\n\"Botswana\": \"left\",\n\"Eswatini\": \"left\",\n\"Kenya\": \"left\",\n\"Lesotho\": \"left\",\n\"Malawi\": \"left\",\n\"Mauritius\": \"left\",\n\"Mozambique\": \"left\",\n\"Namibia\": \"left\",\n\"South Africa\": \"left\",\n\"Tanzania\": \"left\",\n\"Uganda\": \"left\",\n\"Zambia\": \"left\",\n\"Zimbabwe\": \"left\",\n\"Bangladesh\": \"left\",\n\"Bhutan\": \"left\",\n\"Brunei\": \"left\",\n\"Hong Kong\": \"left\",\n\"India\": \"left\",\n\"Indonesia\": \"left\",\n\"Japan\": \"left\",\n\"Malaysia\": \"left\",\n\"Nepal\": \"left\",\n\"Pakistan\": \"left\",\n\"Singapore\": \"left\",\n\"Sri Lanka\": \"left\",\n\"Thailand\": \"left\",\n\"Timor-Leste\": \"left\",\n\"Cyprus\": \"left\",\n\"Ireland\": \"left\",\n\"Malta\": \"left\",\n\"United Kingdom\": \"left\",\n\"Australia\": \"left\",\n\"Fiji\": \"left\",\n\"Kiribati\": \"left\",\n\"New Zealand\": \"left\",\n\"Papua New Guinea\": \"left\",\n\"Samoa\": \"left\",\n\"Solomon Islands\": \"left\",\n\"Tonga\": \"left\",\n\"Tuvalu\": \"left\",\n\"Barbados\": \"left\",\n\"Bahamas\": \"left\",\n\"Jamaica\": \"left\",\n\"Saint Kitts and Nevis\": \"left\",\n\"Saint Lucia\": \"left\",\n\"Saint Vincent and the Grenadines\": \"left\",\n\"Trinidad and Tobago\": \"left\",\n\"Macau\": \"left\",\n\"Suriname\": \"left\",\n\"Afghanistan\": \"right\",\n\"Albania\": \"right\",\n\"Algeria\": \"right\",\n\"Andorra\": \"right\",\n\"Angola\": \"right\",\n\"Antigua and Barbuda\": \"right\",\n\"Argentina\": \"right\",\n\"Armenia\": \"right\",\n\"Austria\": \"right\",\n\"Azerbaijan\": \"right\",\n\"Bahrain\": \"right\",\n\"Belarus\": \"right\",\n\"Belgium\": \"right\",\n\"Belize\": \"right\",\n\"Benin\": \"right\",\n\"Bolivia\": \"right\",\n\"Bosnia and Herzegovina\": \"right\",\n\"Brazil\": \"right\",\n\"Bulgaria\": \"right\",\n\"Burkina Faso\": \"right\",\n\"Burundi\": \"right\",\n\"Cabo Verde\": \"right\",\n\"Cambodia\": \"right\",\n\"Cameroon\": \"right\",\n\"Canada\": \"right\",\n\"Central African Republic\": \"right\",\n\"Chad\": \"right\",\n\"Chile\": \"right\",\n\"China\": \"right\",\n\"Colombia\": \"right\",\n\"Comoros\": \"right\",\n\"Congo (Congo-Brazzaville)\": \"right\",\n\"Costa Rica\": \"right\",\n\"Croatia\": \"right\",\n\"Cuba\": \"right\",\n\"Czech Republic\": \"right\",\n\"Democratic Republic of the Congo\": \"right\",\n\"Denmark\": \"right\",\n\"Djibouti\": \"right\",\n\"Dominica\": \"right\",\n\"Dominican Republic\": \"right\",\n\"Ecuador\": \"right\",\n\"Egypt\": \"right\",\n\"El Salvador\": \"right\",\n\"Equatorial Guinea\": \"right\",\n\"Eritrea\": \"right\",\n\"Estonia\": \"right\",\n\"Ethiopia\": \"right\",\n\"Finland\": \"right\",\n\"France\": \"right\",\n\"Gabon\": \"right\",\n\"Gambia\": \"right\",\n\"Georgia\": \"right\",\n\"Germany\": \"right\",\n\"Ghana\": \"right\",\n\"Greece\": \"right\",\n\"Grenada\": \"right\",\n\"Guatemala\": \"right\",\n\"Guinea\": \"right\",\n\"Guinea-Bissau\": \"right\",\n\"Guyana\": \"right\",\n\"Haiti\": \"right\",\n\"Honduras\": \"right\",\n\"Hungary\": \"right\",\n\"Iceland\": \"right\",\n\"Iran\": \"right\",\n\"Iraq\": \"right\",\n\"Israel\": \"right\",\n\"Italy\": \"right\",\n\"Ivory Coast\": \"right\",\n\"Jordan\": \"right\",\n\"Kazakhstan\": \"right\",\n\"Kuwait\": \"right\",\n\"Kyrgyzstan\": \"right\",\n\"Laos\": \"right\",\n\"Latvia\": \"right\",\n\"Lebanon\": \"right\",\n\"Liberia\": \"right\",\n\"Libya\": \"right\",\n\"Liechtenstein\": \"right\",\n\"Lithuania\": \"right\",\n\"Luxembourg\": \"right\",\n\"Madagascar\": \"right\",\n\"Maldives\": \"right\",\n\"Mali\": \"right\",\n\"Marshall Islands\": \"right\",\n\"Mauritania\": \"right\",\n\"Mexico\": \"right\",\n\"Micronesia\": \"right\",\n\"Moldova\": \"right\",\n\"Monaco\": \"right\",\n\"Mongolia\": \"right\",\n\"Montenegro\": \"right\",\n\"Morocco\": \"right\",\n\"Myanmar\": \"right\",\n\"Nauru\": \"right\",\n\"Netherlands\": \"right\",\n\"Nicaragua\": \"right\",\n\"Niger\": \"right\",\n\"Nigeria\": \"right\",\n\"North Korea\": \"right\",\n\"North Macedonia\": \"right\",\n\"Norway\": \"right\",\n\"Oman\": \"right\",\n\"Palau\": \"right\",\n\"Palestine\": \"right\",\n\"Panama\": \"right\",\n\"Paraguay\": \"right\",\n\"Peru\": \"right\",\n\"Philippines\": \"right\",\n\"Poland\": \"right\",\n\"Portugal\": \"right\",\n\"Qatar\": \"right\",\n\"Romania\": \"right\",\n\"Russia\": \"right\",\n\"Rwanda\": \"right\",\n\"San Marino\": \"right\",\n\"Sao Tome and Principe\": \"right\",\n\"Saudi Arabia\": \"right\",\n\"Senegal\": \"right\",\n\"Serbia\": \"right\",\n\"Seychelles\": \"right\",\n\"Sierra Leone\": \"right\",\n\"Slovakia\": \"right\",\n\"Slovenia\": \"right\",\n\"Somalia\": \"right\",\n\"South Korea\": \"right\",\n\"South Sudan\": \"right\",\n\"Spain\": \"right\",\n\"Sudan\": \"right\",\n\"Sweden\": \"right\",\n\"Switzerland\": \"right\",\n\"Syria\": \"right\",\n\"Tajikistan\": \"right\",\n\"Togo\": \"right\",\n\"Tunisia\": \"right\",\n\"Turkey\": \"right\",\n\"Turkmenistan\": \"right\",\n\"Ukraine\": \"right\",\n\"United Arab Emirates\": \"right\",\n\"United States\": \"right\",\n\"Uruguay\": \"right\",\n\"Uzbekistan\": \"right\",\n\"Vanuatu\": \"right\",\n\"Vatican City\": \"right\",\n\"Venezuela\": \"right\",\n\"Vietnam\": \"right\",\n\"Yemen\": \"right\"\n}\nFinally please respond with your guess for the top three countries in the format.\n[1] Top guess\n[2] second guess\n[3] third guess"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": "The image shows a street view of a road with vehicles parked on the right side and driving on the left side of the road. The presence of Chinese characters on the building to the left suggests that the country may be China or another country with Chinese-speaking populations.\n\nTo determine the country, we can first identify the side of the road that people are driving on in the picture. The vehicles appear to be driving on the left side of the road.\n\nNext, we can eliminate countries that do not match this information using the provided JSON dictionary. The dictionary lists countries and their corresponding driving sides. We can filter the countries that drive on the left side of the road.\n\nSome of the countries that drive on the left side of the road include:\n* Australia\n* Bangladesh\n* Bhutan\n* Brunei\n* Hong Kong\n* India\n* Indonesia\n* Ireland\n* Japan\n* Kenya\n* Malaysia\n* Malta\n* Mauritius\n* New Zealand\n* Pakistan\n* Singapore\n* South Africa\n* Sri Lanka\n* Thailand\n* United Kingdom\n\nConsidering the presence of Chinese characters on the building, the top three guesses for the country are:\n\n[1] Malaysia\n[2] Thailand\n[3] Singapore\n\nThese countries are all located in Southeast Asia, have significant Chinese populations, and drive on the left side of the road.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Let'\''s go with the number one most likely country. Can you tell me what are the three most likely states this is located in in Malaysia? Use the same format."
+      },
+      {
+        "role": "assistant",
+        "content": "Based on the image, the most likely country is Malaysia. To narrow down the location within Malaysia, let'\''s examine the image further.\n\nThe image shows a street view with a mix of buildings, including shops and possibly residential or commercial structures. The presence of palm trees and the overall architecture suggest a tropical or subtropical region.\n\nMalaysia is divided into two main landmasses: Peninsular Malaysia and East Malaysia. Peninsular Malaysia is further divided into states, with some being more urbanized than others.\n\nConsidering the urban setting and the presence of palm trees, the top three guesses for the state in Malaysia are:\n\n[1] Selangor\n[2] Johor\n[3] Penang\n\nThese states are among the most developed and urbanized in Peninsular Malaysia, with a high likelihood of having the type of infrastructure and architecture shown in the image. Selangor is particularly notable as it is the most populous state and surrounds the federal territories of Kuala Lumpur and Putrajaya, making it a hub for commercial and residential activities.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "what about east malaysia?"
+      },
+      {
+        "role": "assistant",
+        "content": "East Malaysia, which comprises the states of Sabah and Sarawak, is also a possibility. While the image doesn'\''t provide specific clues that directly point to East Malaysia, it'\''s worth considering.\n\nUpon further consideration, the top three guesses for the state in Malaysia, including East Malaysia, are:\n\n[1] Sarawak\n[2] Selangor\n[3] Sabah\n\nSarawak and Sabah are both located in East Malaysia and have a mix of urban and rural areas, with a tropical climate and palm trees being common features. The architecture and infrastructure in these states can be similar to those found in Peninsular Malaysia, making them plausible locations.\n\nWhile Selangor remains a strong contender due to its high level of urbanization, Sarawak and Sabah are also possible locations, especially if the image is from a smaller town or city in East Malaysia.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Let'\''s go with the number one most likely state. Can you tell me what are the three most likely areas this is located in in Sarawak? Use the same format."
+      },
+      {
+        "role": "assistant",
+        "content": "Based on the image, the most likely state is Sarawak. To narrow down the location within Sarawak, let'\''s examine the image further.\n\nSarawak is the largest state in Malaysia, with a diverse geography and a mix of urban and rural areas. The image shows a street view with a mix of buildings, including shops and possibly residential or commercial structures.\n\nSome of the major towns and cities in Sarawak include Kuching, Sibu, and Miri. These areas are likely to have the type of infrastructure and architecture shown in the image.\n\nThe top three guesses for the area in Sarawak are:\n\n[1] Kuching\n[2] Sibu\n[3] Miri\n\nKuching is the capital city of Sarawak and is known for its well-developed infrastructure and mix of traditional and modern architecture. Sibu and Miri are also major towns in Sarawak, with Sibu being a commercial hub and Miri being a major oil and gas center.\n\nThese areas are likely to have the type of street view and architecture shown in the image, making them plausible locations.",
+        "stop_reason": "stop"
+      }
+    ],
+    "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "repetition_penalty": 1,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "max_completion_tokens": 2048,
+    "stream": true
+}'
