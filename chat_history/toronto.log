@@ -1,0 +1,89 @@
+curl "https://api.llama.com/v1/chat/completions" \
+  -H 'Accept: text/event-stream'  \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $LLAMA_API_KEY" \
+  -d '{
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAiBJREFUaEPtWU1KQ0EMnt7DG1RpeSIqLryH4qIoFIoLQY+h4EIKBUsXovdwIepGLOp5lAgDY5jJzzTvD99blpkkX/Ilk6S9tX7x7Vr89ToANUevi0DNAXD/JwIXpxNXDAdusLFeqtOXH5/u7X3pLm+mIj1sBPZ3d9z0+kokzPrQ5OzcPT6/kGJZAF+vT9Z2qeRxIEgAQJvR0aFKofXhlQA83M7+cH5xdy/mZi4Q7DTIiYOTcVIcGQFMn/72Xq5dqnsavUkAseStCwBFIzEALpQqFzOHMXWzAGAuxvgfnrHMj0oAxCqUFQiJ83wQkxTihKTeB4s8wflH0TcJgAtj6wGUSaFKIgAcLCuJTQBoHhPLEuplSfUnc0AqoAzjQaZUf+UAgB7j49Fvj0WV3UYC0CR+4wBQrXksEo0CIJkrMIiVAeCHDL+wnsuQcNQMKzHeF4IQhDmAsCOUcjllPBgKX2za8yBKA8B51BtAGe83Dqkz0PuE2w+zXmhrsxDNyNiAGEX8b5xD4FwWgNhsGtsJpYzFDxxV8zkQJgBiLy5HF8rzWJ62zKrnAYlHpcmdaj8keYPvimfi8CJHB1hBwjebL9jNmiQSlD41AKuxkWoCuWEqvKsCUIXxsU40ayuhaWmtW2rpIwZ6yc1c61eLda7WpSWYjEATAHBrGvb/gTpBcKt1NgfC5GztX0zWFcZaHksha4XW8joA1h7VyusioPWY9fkfQM0LzylMtisAAAAASUVORK5CYII="
+            }
+          },
+          {
+            "type": "text",
+            "text": "Tell me about the distinctive features on this road that help determine what country this is in. Respond with your guess for the top three countries in the format\n\"[1] Country\n[2] Country\n[3] Country\""
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": "To determine the country where this image was taken, we can analyze several distinctive features visible in the scene.\n\n1. **Architecture and Urban Planning**: The presence of high-rise buildings suggests a densely populated urban area. This is common in many countries around the world but is particularly characteristic of cities in North America and parts of Asia.\n\n2. **Signage and Language**: The language used on signs can be a strong indicator of the country. In this image, the text is in English, which narrows it down to countries where English is an official language or widely used.\n\n3. **Street Layout and Traffic**: The road appears to be a one-way street with a single lane and a sidewalk on at least one side. The presence of a car driving on the right side of the road indicates that the country drives on the right-hand side, which is common in many parts of the world, including North America.\n\n4. **Google Maps Interface**: The image includes a Google Maps interface at the bottom right, showing a map with country names like \"Mali,\" \"Niger,\" \"Sudan,\" \"Nigeria,\" \"Chad,\" \"DRC,\" \"Angola,\" \"Kenya,\" and \"Tanzania.\" However, the main map view shows a region that is not Africa, as indicated by the architecture and the presence of a Delta hotel, which is a Canadian chain.\n\n5. **Delta Hotel**: The presence of a \"Delta\" hotel is significant. Delta Hotels is a Canadian hotel chain owned by Marriott International. While Marriott has hotels worldwide, the specific branding here points towards Canada.\n\n6. **Overall Context**: Considering the high-rise buildings, the language on signs, and the Delta hotel, these elements collectively suggest that the image is likely from Canada.\n\nGiven these observations, the top three countries where this image could have been taken are likely to be English-speaking countries with similar urban landscapes. However, the specific mention of \"Delta\" strongly points towards Canada.\n\nTherefore, the guess for the top three countries is:\n\"[1] Canada\n[2] United States\n[3] Australia\"",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "For each of the top three countries, is there any evidence in the picture that indicates the location cannot be in that country?"
+      },
+      {
+        "role": "assistant",
+        "content": "To assess whether the picture could be from each of the top three countries (Canada, United States, Australia), let'\''s examine the evidence:\n\n1. **Canada**:\n   - The presence of a \"Delta\" hotel, a Canadian hotel chain, is a strong indicator.\n   - The architecture and urban planning are consistent with Canadian cities.\n   - **No contradictory evidence** is visible in the image that would rule out Canada.\n\n2. **United States**:\n   - The architecture and the presence of high-rise buildings are common in many U.S. cities.\n   - However, there'\''s no specific U.S.-unique feature visible that would confirm it is in the U.S.\n   - The presence of a \"Delta\" hotel, which is a Canadian chain, makes it less likely to be in the U.S., but not impossible since international chains can have locations in multiple countries.\n   - **No direct evidence rules out the U.S.**, but the Delta hotel is a less common indicator.\n\n3. **Australia**:\n   - The architecture could be consistent with some Australian cities, which also have high-rise buildings.\n   - However, the specific branding of \"Delta\" hotels is not typically associated with Australia; it'\''s more associated with Canada.\n   - There'\''s no clear evidence that directly rules out Australia based on the visible features alone.\n\nUpon closer inspection, while there'\''s no direct evidence that categorically rules out any of these countries based solely on the visual content provided, the presence of a \"Delta\" hotel strongly suggests Canada. The absence of overtly contradictory evidence doesn'\''t necessarily confirm any of the other locations.\n\nTherefore, the assessment is:\n- **Canada**: No evidence indicates it cannot be in Canada; in fact, there'\''s supporting evidence.\n- **United States**: While possible, the \"Delta\" hotel is less typical.\n- **Australia**: Less likely due to the \"Delta\" branding being more associated with Canada, but not definitively ruled out by the visible evidence.\n\nThus, there'\''s no strong evidence in the picture that directly indicates the location cannot be in any of these countries based on the criteria alone, except that \"Delta\" hotels are more characteristic of Canada.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "what about which side of the road cars are driving on?"
+      },
+      {
+        "role": "assistant",
+        "content": "The image shows a car driving on the right side of the road. This detail is crucial because it helps narrow down the possible countries based on their driving practices.\n\n1. **Canada**: Canada drives on the right-hand side of the road, so this is consistent with the image.\n2. **United States**: The U.S. also drives on the right-hand side, making it consistent with the image as well.\n3. **Australia**: Australia drives on the left-hand side of the road. The image shows a car driving on the right side, which is not consistent with Australian driving practices.\n\nTherefore, considering the side of the road on which cars are driving:\n- The image is consistent with driving practices in **Canada** and the **United States**.\n- The image is **not consistent** with driving practices in **Australia** because Australia drives on the left-hand side.\n\nThis observation rules out Australia as a possible location based on the driving side alone.\n\nSo, revising the initial assessment with this new information:\n- **[1] Canada**\n- **[2] United States**\n- **[3] None of the other options are plausible given the driving side and other contextual clues.**\n\nThe presence of a \"Delta\" hotel and the right-hand side driving practice strongly supports Canada as the most likely location.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Now let'\''s go with the most likely option. Can you tell me what are the three most likely provinces this is located in in Canada? Format it in\n[1] Province\n[2] Province\n[3] Province"
+      },
+      {
+        "role": "assistant",
+        "content": "Given that the most likely country is Canada, let'\''s analyze the image to determine the most probable provinces.\n\n1. **Presence of \"Delta\" Hotel**: Delta Hotels is a Canadian hotel chain, which supports the Canadian location. Delta Hotels has locations across Canada, but they are more concentrated in certain provinces.\n\n2. **Urban Landscape and Architecture**: The high-rise buildings suggest a major urban center. Canada has several major cities with such landscapes, including Toronto, Vancouver, Montreal, and Calgary.\n\n3. **Language and Signage**: The use of English on signs is consistent with many provinces, but particularly points towards provinces where English is predominantly spoken.\n\nConsidering these factors:\n\n- **Ontario** is a strong candidate because it is home to Toronto, one of Canada'\''s most populous cities with a high concentration of high-rise buildings. Delta Hotels has a significant presence in Ontario.\n  \n- **British Columbia** is another possibility, given Vancouver'\''s dense urban landscape and the presence of Delta Hotels in the province.\n\n- **Alberta** could also be considered due to Calgary'\''s urban development and the presence of Delta Hotels.\n\nBased on these observations, the three most likely provinces are:\n[1] Ontario\n[2] British Columbia\n[3] Alberta\n\nOntario is particularly likely due to the presence of Toronto, a city known for its high-rise buildings and dense urban landscape, and the fact that Delta Hotels has a significant presence there.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Let'\''s go with the first option. What are the top 3 cities you think this is located in? Use the same format as before."
+      },
+      {
+        "role": "assistant",
+        "content": "Given that the most likely province is Ontario, let'\''s analyze the image to determine the most probable cities within Ontario.\n\n1. **Urban Landscape and Architecture**: The high-rise buildings suggest a major urban center. Toronto is the most prominent city in Ontario known for its dense skyline and high-rise architecture.\n\n2. **Presence of \"Delta\" Hotel**: Delta Hotels has several locations in Ontario, but they are particularly prevalent in Toronto.\n\n3. **Street Layout and Traffic**: The road layout and the presence of a one-way street or a wide road with a single lane in the visible direction are consistent with urban planning in Toronto.\n\nConsidering these factors, the top 3 cities in Ontario where this is likely located are:\n[1] Toronto\n[2] Mississauga\n[3] Ottawa\n\nToronto is the most likely due to its dense urban landscape, the presence of high-rise buildings, and the likelihood of Delta Hotels being located there. Mississauga, being part of the Greater Toronto Area, also has a significant number of high-rise buildings and could be a possibility. Ottawa, while having some high-rise areas, is less likely compared to Toronto but still a potential candidate due to its urban development.\n\nTherefore, the top 3 cities are:\n[1] Toronto\n[2] Mississauga\n[3] Ottawa",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Let'\''s go with the first option. What are the top 3 neighborhoods you think this is located in? Use the same format as before."
+      },
+      {
+        "role": "assistant",
+        "content": "Given that the most likely city is Toronto, let'\''s analyze the image to determine the most probable neighborhoods within Toronto.\n\n1. **Urban Landscape and Architecture**: The high-rise buildings suggest a neighborhood with dense development. Areas like Downtown Toronto, North York Centre, and other major hubs are known for such landscapes.\n\n2. **Presence of \"Delta\" Hotel**: Delta Hotels has several locations in Toronto, including in the downtown area and near major transportation hubs.\n\n3. **Street Layout and Traffic**: The road layout is consistent with urban planning in Toronto, which often features a grid pattern or wide roads with multiple lanes.\n\nConsidering these factors, the top 3 neighborhoods in Toronto where this is likely located are:\n[1] Downtown Toronto (specifically around the Financial District or near major intersections like Yonge-Dundas)\n[2] North York Centre\n[3] Yorkville or the Entertainment District\n\nDowntown Toronto is a strong candidate due to its dense skyline and the presence of major hotels and corporate buildings. North York Centre is another possibility due to its high-rise development. Yorkville and the Entertainment District are also densely developed areas with high-rise buildings and could potentially match the scene.\n\nTherefore, the top 3 neighborhoods are:\n[1] Downtown Toronto\n[2] North York Centre\n[3] Yorkville or the Entertainment District",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "where are all the delta hotels in toronto?"
+      },
+      {
+        "role": "assistant",
+        "content": "To determine the specific location within Toronto, let'\''s look at where Delta Hotels are located in Toronto.\n\nDelta Hotels has several locations in Toronto, including:\n\n1. **Delta Toronto Hotel**: Located at 75 Lower Simcoe St, Toronto, ON M5J 2S5. This is in the downtown area, near the waterfront and the Entertainment District.\n   \n2. **Delta Hotels Toronto Airport & Conference Centre by Marriott**: Situated at 655 Dixon Rd, Toronto, ON M9W 1J5. This location is near Toronto Pearson International Airport.\n\n3. **Delta Toronto East**: At 50 Merton St, Toronto, ON M4S 1A3. This is in the Yonge & Eglinton area, not far from downtown.\n\nGiven these locations, the image could potentially be near one of these Delta Hotels. However, the presence of high-rise buildings and the urban landscape in the image is most consistent with a downtown or central location.\n\nLet'\''s examine if any of these locations match the visible features in the image.\n\nUpon further inspection, the image appears to be near the **Delta Toronto Hotel** (75 Lower Simcoe St), given the urban landscape and the presence of high-rise buildings.\n\nThe street view and surrounding architecture are consistent with the area around Simcoe Street and Bremner Boulevard or nearby streets in downtown Toronto.\n\nTherefore, the most likely neighborhood based on the Delta Hotel location is the area around **Downtown Toronto**, specifically near the Entertainment District or the Financial District.\n\nThis aligns with our earlier assessment that the top neighborhood is likely **Downtown Toronto**.",
+        "stop_reason": "stop"
+      }
+    ],
+    "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "repetition_penalty": 1,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "max_completion_tokens": 2048,
+    "stream": true
+}'
+
