@@ -1,0 +1,71 @@
+curl "https://api.llama.com/v1/chat/completions" \
+  -H 'Accept: text/event-stream'  \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $LLAMA_API_KEY" \
+  -d '{
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAiBJREFUaEPtWU1KQ0EMnt7DG1RpeSIqLryH4qIoFIoLQY+h4EIKBUsXovdwIepGLOp5lAgDY5jJzzTvD99blpkkX/Ilk6S9tX7x7Vr89ToANUevi0DNAXD/JwIXpxNXDAdusLFeqtOXH5/u7X3pLm+mIj1sBPZ3d9z0+kokzPrQ5OzcPT6/kGJZAF+vT9Z2qeRxIEgAQJvR0aFKofXhlQA83M7+cH5xdy/mZi4Q7DTIiYOTcVIcGQFMn/72Xq5dqnsavUkAseStCwBFIzEALpQqFzOHMXWzAGAuxvgfnrHMj0oAxCqUFQiJ83wQkxTihKTeB4s8wflH0TcJgAtj6wGUSaFKIgAcLCuJTQBoHhPLEuplSfUnc0AqoAzjQaZUf+UAgB7j49Fvj0WV3UYC0CR+4wBQrXksEo0CIJkrMIiVAeCHDL+wnsuQcNQMKzHeF4IQhDmAsCOUcjllPBgKX2za8yBKA8B51BtAGe83Dqkz0PuE2w+zXmhrsxDNyNiAGEX8b5xD4FwWgNhsGtsJpYzFDxxV8zkQJgBiLy5HF8rzWJ62zKrnAYlHpcmdaj8keYPvimfi8CJHB1hBwjebL9jNmiQSlD41AKuxkWoCuWEqvKsCUIXxsU40ayuhaWmtW2rpIwZ6yc1c61eLda7WpSWYjEATAHBrGvb/gTpBcKt1NgfC5GztX0zWFcZaHksha4XW8joA1h7VyusioPWY9fkfQM0LzylMtisAAAAASUVORK5CYII="
+            }
+          },
+          {
+            "type": "text",
+            "text": "Tell me about the distinctive features in this picture that help determine what country this is in. Respond with your guess for the top three countries in the format. Please pay attention to which side of the road people are driving on, when making your top three guesses.\n[1] Top guess\n[2] second guess\n[3] third guess"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": "To determine the country in the image, let'\''s analyze the distinctive features:\n\n1. **Driving Side**: The vehicle is driving on the right-hand side of the road. This indicates that the country is likely one where driving on the right-hand side is the norm.\n\n2. **Vehicle Type**: The presence of a Toyota vehicle, which is a popular brand globally but especially significant in many Asian countries.\n\n3. **Tricycles/Tuk-Tuks**: The image shows tricycles or tuk-tuks, which are common modes of transportation in several Southeast Asian countries.\n\n4. **Waterfront Houses and Boats**: The scene depicts houses along a waterway with boats docked nearby, suggesting a culture or region where waterways are integral to daily life.\n\n5. **Architecture and Infrastructure**: The architecture of the houses and the infrastructure (like the bridge) appear to be typical of developing or semi-urban areas in certain parts of Asia.\n\nGiven these observations:\n\n- **Driving on the Right-Hand Side**: This practice is common in many countries, including the United States, Canada, most of Europe, and many countries in Asia and South America.\n- **Presence of Tricycles/Tuk-Tuks and Waterfront Houses**: These are particularly common in Southeast Asia.\n\nConsidering these factors, the top three guesses for the country are based on the prevalence of right-hand driving, the presence of tuk-tuks, and the architectural style:\n\n[1] **Philippines** - Known for using right-hand drive vehicles, having a significant number of tuk-tuks (locally known as \"tricycles\"), and featuring waterfront communities.\n\n[2] **Indonesia** - Also drives on the right, has a large number of tuk-tuks (known as \"bajaj\" or \"angkot\" in some regions, though \"angkot\" usually refers to a different type of vehicle), and has many waterfront settlements.\n\n[3] **Vietnam** - Drives on the right, and while less known for tuk-tuks compared to some other Southeast Asian countries, it has a significant presence of them, especially in tourist areas. Vietnam also has extensive waterfront communities.\n\nTherefore, the top guess is the Philippines, due to the specific combination of right-hand driving, the presence of tuk-tuks, and the style of the waterfront houses and infrastructure.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "do people drive on the right or left side of the road in indonesia"
+      },
+      {
+        "role": "assistant",
+        "content": "In Indonesia, people drive on the **left** side of the road. I apologize for the mistake earlier.\n\nGiven this correction, let'\''s reassess the top three guesses:\n\n1. The vehicle is driving on the **right-hand side** of the road.\n2. The presence of tuk-tuks and waterfront houses.\n\nWith the knowledge that Indonesia drives on the left, it is unlikely to be Indonesia.\n\nHere'\''s an updated list of top three guesses:\n\n[1] **Philippines** - Drives on the right, has tuk-tuks (locally known as \"tricycles\"), and features waterfront communities.\n\n[2] **Thailand** - Although Thailand drives on the left, it is still a possibility due to the presence of tuk-tuks. However, considering the right-hand driving in the image, it'\''s less likely.\n\n[3] **Vietnam** is less likely due to the prevalence of right-hand drive vehicles not being as common as in the Philippines.\n\nA more plausible alternative could be considered among countries that drive on the right-hand side.\n\nUpon reevaluation, a more accurate top three could be:\n\n[1] **Philippines**\n[2] **Mexico** or other Latin American countries that drive on the right and may have similar tuk-tuk or tricycle usage.\n[3] **Colombia** or other South American countries with similar characteristics.\n\nHowever, the presence of tuk-tuks is more characteristic of Southeast Asia. Thus, the Philippines remains a strong candidate. Other countries that drive on the right and might have similar vehicles or cultural practices could be considered, but they might not be as likely due to the specific cultural and infrastructural context shown in the image.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Now let'\''s go with the most likely country. Can you tell me what are the three most likely subdivisions this is located in in the Philippines? Use the same format.\n"
+      },
+      {
+        "role": "assistant",
+        "content": "To narrow down the subdivisions within the Philippines, let'\''s consider the characteristics observed in the image:\n\n1. **Waterfront Houses and Boats**: The presence of houses along a waterway with boats suggests a location near a significant body of water, such as a river, lake, or coastal area.\n\n2. **Bridge Infrastructure**: The image shows a bridge, indicating the area is connected by waterways that require crossing.\n\n3. **Tricycles/Tuk-Tuks**: The presence of tricycles is common in many parts of the Philippines.\n\n4. **General Architecture and Infrastructure**: The architecture and infrastructure suggest a semi-urban or rural area.\n\nGiven these observations, the most likely country is the **Philippines**. To identify the subdivisions within the Philippines, we can consider regions known for their waterways and bridge infrastructure.\n\nThe top three subdivisions in the Philippines that could match this description are:\n\n[1] **Bulacan** - Known for its numerous waterways and bridges, especially in areas like Plaridel and Pulilan, where rivers and canals are common.\n\n[2] **Pampanga** - Features significant waterways and could have areas with similar characteristics, though it'\''s more known for its agricultural lands and urban areas like Angeles City and San Fernando.\n\n[3] **Rizal** - Has areas with waterways and is near Metro Manila, making it a plausible location for such a scene, especially considering its proximity to Laguna de Bay.\n\nTherefore, the top three subdivisions are:\n[1] Bulacan\n[2] Pampanga\n[3] Rizal\n\nThese regions are plausible due to their geographical features and infrastructure. However, without more specific details or a clearer view of the surroundings, pinpointing the exact location is challenging.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "Now let'\''s go with the most likely subdivision. Can you tell me what are the three most likely municipality this is located in in Bulacan? Use the same format."
+      },
+      {
+        "role": "assistant",
+        "content": "To narrow down the municipalities within Bulacan, Philippines, let'\''s consider the characteristics observed in the image:\n\n1. **Waterfront Houses and Boats**: The presence of houses along a waterway with boats suggests a location near a significant body of water.\n\n2. **Bridge Infrastructure**: The image shows a bridge, indicating the area is connected by waterways that require crossing.\n\n3. **Tricycles/Tuk-Tuks**: The presence of tricycles is common in many parts of Bulacan.\n\nGiven these observations, the most likely subdivision is **Bulacan**. To identify the municipalities within Bulacan, we can consider areas known for their waterways and bridge infrastructure.\n\nSome municipalities in Bulacan known for their waterways include:\n\n* Plaridel, known for its rivers and canals.\n* Pulilan, also features significant waterways.\n* Hagonoy and Paombong are also known for their waterways and are located near the coast.\n\nThe top three municipalities in Bulacan that could match this description are:\n\n[1] **Plaridel** - Known for its rivers and canals, making it a strong candidate.\n\n[2] **Pulilan** - Features significant waterways and could have areas with similar characteristics.\n\n[3] **Paombong** - Has a significant amount of waterways and is known for its fishing industry.\n\nTherefore, the top three municipalities are:\n[1] Plaridel\n[2] Pulilan\n[3] Paombong\n\nThese municipalities are plausible due to their geographical features and infrastructure.",
+        "stop_reason": "stop"
+      },
+      {
+        "role": "user",
+        "content": "ok give me your decision"
+      },
+      {
+        "role": "assistant",
+        "content": "Based on the analysis, my decision is:\n\nThe image is most likely taken in the **Philippines**, specifically in the province of **Bulacan**, and more precisely in the municipality of **Plaridel**.\n\nThis conclusion is drawn from the presence of right-hand driving, tuk-tuks (tricycles), waterfront houses, and bridge infrastructure, which are all consistent with the characteristics of Plaridel, Bulacan.",
+        "stop_reason": "stop"
+      }
+    ],
+    "model": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "repetition_penalty": 1,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "max_completion_tokens": 2048,
+    "stream": true
+}'
+
