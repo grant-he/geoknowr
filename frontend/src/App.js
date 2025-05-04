@@ -78,7 +78,10 @@ function App() {
 
     if (page === 'loading') {
         return (
-            <h1>Analyzing...</h1>
+            <div className="loading" style={{ textAlign: 'center' }}>
+                <img src="images/globe.gif" alt="Loading..." />
+                <p></p>Searching the globe, please wait...
+            </div>
         );
     }
 
