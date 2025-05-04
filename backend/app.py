@@ -1,9 +1,8 @@
 import os
-import time
 import json
 import base64
 import logging
-from flask import Flask, request, jsonify, Response, stream_with_context
+from flask import Flask, request, jsonify, Response
 from werkzeug.utils import secure_filename
 from llama_api_client import LlamaAPIClient
 from flask_cors import CORS
@@ -336,6 +335,7 @@ def know(filepath):
     })
 
     top_country = get_text_after_marker(country_full_text)
+    yield top_country
     print(top_country)
 
     conversation.append({
@@ -364,8 +364,8 @@ def know(filepath):
     print(subdivision_full_text)
 
     top_subdivision = get_text_after_marker(subdivision_full_text)
+    yield top_subdivision
     print(top_subdivision)
-
 
     processing_result = {
         "status": "success",
@@ -412,35 +412,7 @@ def handle_image_push():
                 logger.info(f"Image saved successfully to: {filepath}")
 
                 # Call your know(filepath) function
-                # processing_status = know(filepath)
-                return Response(generate_plain_text(), mimetype='text/plain')
-
-                # You can customize the response based on what `know` returns
-                if processing_status.get("status") == "success":
-                    return (
-                        jsonify(
-                            {
-                                "message": "Image uploaded and processed successfully.",
-                                "filename": filename,
-                                "details": processing_status.get("message", ""),
-                            }
-                        ),
-                        200,
-                    )
-                else:
-                    # If know() indicates an error during its processing
-                    return (
-                        jsonify(
-                            {
-                                "error": "Image uploaded, but processing failed.",
-                                "filename": filename,
-                                "details": processing_status.get(
-                                    "message", "Unknown processing error."
-                                ),
-                            }
-                        ),
-                        500,
-                    )
+                return Response(know(filepath), mimetype="text/plain")
 
             except Exception as e:
                 logger.error(
