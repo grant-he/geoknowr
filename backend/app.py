@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from llama_api_client import LlamaAPIClient
 
 client = LlamaAPIClient(
-    base_url="https://api.llama.com/",
+    base_url="https://api.llama.com/v1/",
     api_key=os.environ.get("LLAMA_API_KEY"),
 )
 
@@ -56,14 +56,9 @@ def know(filepath):
     """
     logger.info(f"Function 'know' called with filepath: {filepath}")
     image = encode_image(filepath)
-    logger.info(f"Encoded image: {image}")
-
+    
     response = client.chat.completions.create(
         messages=[
-        {
-            "role": "system",
-            "content": "You are a geography expert."
-        },
         {
             "role": "user",
             "content": [
@@ -81,7 +76,7 @@ def know(filepath):
         },
         ],
         model="Llama-4-Maverick-17B-128E-Instruct-FP8",
-        stream=True,
+        # stream=True,
         temperature=0.6,
         max_completion_tokens=2048,
         top_p=0.9,
@@ -90,10 +85,11 @@ def know(filepath):
         ],
     )
 
-    for chunk in response:
-        print(chunk)
-
-    processing_result = {"status": "success", "message": "Image received and 'know' function was called.", "processed_filepath": filepath}
+    print(response.completion_message.content.text)
+    # for chunk in response:
+    #     print(chunk)
+    
+    processing_result = {"status": "success", "message": response.completion_message.content.text, "processed_filepath": filepath}
     logger.info(f"'know' function processing complete for {filepath}. Result: {processing_result}")
     return processing_result
 
