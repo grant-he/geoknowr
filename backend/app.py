@@ -1,7 +1,14 @@
 import os
+import base64
+import logging
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
-import logging # For better logging
+from llama_api_client import LlamaAPIClient
+
+client = LlamaAPIClient(
+    base_url="https://api.llama.com/",
+    api_key=os.environ.get("LLAMA_API_KEY"),
+)
 
 # --- Configuration ---
 UPLOAD_FOLDER = 'api_uploads'  # Folder where uploaded images will be stored for processing
@@ -34,6 +41,10 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+
 # --- Your Processing Function ---
 def know(filepath):
     """
@@ -44,37 +55,47 @@ def know(filepath):
         filepath (str): The absolute or relative path to the saved image file.
     """
     logger.info(f"Function 'know' called with filepath: {filepath}")
-    #
-    # --- YOUR IMAGE PROCESSING LOGIC GOES HERE ---
-    #
-    # For example, you might:
-    # 1. Load the image using a library like Pillow (PIL) or OpenCV:
-    #    from PIL import Image
-    #    try:
-    #        img = Image.open(filepath)
-    #        logger.info(f"Successfully loaded image: {filepath}, format: {img.format}, size: {img.size}")
-    #        # Perform analysis, recognition, etc.
-    #    except FileNotFoundError:
-    #        logger.error(f"Image file not found at path: {filepath}")
-    #        return {"status": "error", "message": "Processed file not found server-side."}
-    #    except Exception as e:
-    #        logger.error(f"Error processing image {filepath} in 'know' function: {e}")
-    #        return {"status": "error", "message": f"Error during image processing: {str(e)}"}
-    #
-    # 2. Call another service or model with this image.
-    # 3. Update a database.
-    #
-    # For this example, we'll just log that it was called.
-    # Replace this with your actual image processing tasks.
-    #
-    # This function could return a result that the API then sends back,
-    # or it could trigger background tasks.
+    image = encode_image(filepath)
+    logger.info(f"Encoded image: {image}")
+
+    response = client.chat.completions.create(
+        messages=[
+        {
+            "role": "system",
+            "content": "You are a geography expert."
+        },
+        {
+            "role": "user",
+            "content": [
+            {
+                "type": "image_url",
+                "image_url": {
+                "url": f"data:image/png;base64,{image}"
+                }
+            },
+            {
+                "type": "text",
+                "text": "Tell me about the distinctive features in this picture that help determine what country this is in. Determine which side of road people are driving on in the picture, then eliminate countries that don'\''t match that information according to the following json dictionary:\n{\n\"Botswana\": \"left\",\n\"Eswatini\": \"left\",\n\"Kenya\": \"left\",\n\"Lesotho\": \"left\",\n\"Malawi\": \"left\",\n\"Mauritius\": \"left\",\n\"Mozambique\": \"left\",\n\"Namibia\": \"left\",\n\"South Africa\": \"left\",\n\"Tanzania\": \"left\",\n\"Uganda\": \"left\",\n\"Zambia\": \"left\",\n\"Zimbabwe\": \"left\",\n\"Bangladesh\": \"left\",\n\"Bhutan\": \"left\",\n\"Brunei\": \"left\",\n\"Hong Kong\": \"left\",\n\"India\": \"left\",\n\"Indonesia\": \"left\",\n\"Japan\": \"left\",\n\"Malaysia\": \"left\",\n\"Nepal\": \"left\",\n\"Pakistan\": \"left\",\n\"Singapore\": \"left\",\n\"Sri Lanka\": \"left\",\n\"Thailand\": \"left\",\n\"Timor-Leste\": \"left\",\n\"Cyprus\": \"left\",\n\"Ireland\": \"left\",\n\"Malta\": \"left\",\n\"United Kingdom\": \"left\",\n\"Australia\": \"left\",\n\"Fiji\": \"left\",\n\"Kiribati\": \"left\",\n\"New Zealand\": \"left\",\n\"Papua New Guinea\": \"left\",\n\"Samoa\": \"left\",\n\"Solomon Islands\": \"left\",\n\"Tonga\": \"left\",\n\"Tuvalu\": \"left\",\n\"Barbados\": \"left\",\n\"Bahamas\": \"left\",\n\"Jamaica\": \"left\",\n\"Saint Kitts and Nevis\": \"left\",\n\"Saint Lucia\": \"left\",\n\"Saint Vincent and the Grenadines\": \"left\",\n\"Trinidad and Tobago\": \"left\",\n\"Macau\": \"left\",\n\"Suriname\": \"left\",\n\"Afghanistan\": \"right\",\n\"Albania\": \"right\",\n\"Algeria\": \"right\",\n\"Andorra\": \"right\",\n\"Angola\": \"right\",\n\"Antigua and Barbuda\": \"right\",\n\"Argentina\": \"right\",\n\"Armenia\": \"right\",\n\"Austria\": \"right\",\n\"Azerbaijan\": \"right\",\n\"Bahrain\": \"right\",\n\"Belarus\": \"right\",\n\"Belgium\": \"right\",\n\"Belize\": \"right\",\n\"Benin\": \"right\",\n\"Bolivia\": \"right\",\n\"Bosnia and Herzegovina\": \"right\",\n\"Brazil\": \"right\",\n\"Bulgaria\": \"right\",\n\"Burkina Faso\": \"right\",\n\"Burundi\": \"right\",\n\"Cabo Verde\": \"right\",\n\"Cambodia\": \"right\",\n\"Cameroon\": \"right\",\n\"Canada\": \"right\",\n\"Central African Republic\": \"right\",\n\"Chad\": \"right\",\n\"Chile\": \"right\",\n\"China\": \"right\",\n\"Colombia\": \"right\",\n\"Comoros\": \"right\",\n\"Congo (Congo-Brazzaville)\": \"right\",\n\"Costa Rica\": \"right\",\n\"Croatia\": \"right\",\n\"Cuba\": \"right\",\n\"Czech Republic\": \"right\",\n\"Democratic Republic of the Congo\": \"right\",\n\"Denmark\": \"right\",\n\"Djibouti\": \"right\",\n\"Dominica\": \"right\",\n\"Dominican Republic\": \"right\",\n\"Ecuador\": \"right\",\n\"Egypt\": \"right\",\n\"El Salvador\": \"right\",\n\"Equatorial Guinea\": \"right\",\n\"Eritrea\": \"right\",\n\"Estonia\": \"right\",\n\"Ethiopia\": \"right\",\n\"Finland\": \"right\",\n\"France\": \"right\",\n\"Gabon\": \"right\",\n\"Gambia\": \"right\",\n\"Georgia\": \"right\",\n\"Germany\": \"right\",\n\"Ghana\": \"right\",\n\"Greece\": \"right\",\n\"Grenada\": \"right\",\n\"Guatemala\": \"right\",\n\"Guinea\": \"right\",\n\"Guinea-Bissau\": \"right\",\n\"Guyana\": \"right\",\n\"Haiti\": \"right\",\n\"Honduras\": \"right\",\n\"Hungary\": \"right\",\n\"Iceland\": \"right\",\n\"Iran\": \"right\",\n\"Iraq\": \"right\",\n\"Israel\": \"right\",\n\"Italy\": \"right\",\n\"Ivory Coast\": \"right\",\n\"Jordan\": \"right\",\n\"Kazakhstan\": \"right\",\n\"Kuwait\": \"right\",\n\"Kyrgyzstan\": \"right\",\n\"Laos\": \"right\",\n\"Latvia\": \"right\",\n\"Lebanon\": \"right\",\n\"Liberia\": \"right\",\n\"Libya\": \"right\",\n\"Liechtenstein\": \"right\",\n\"Lithuania\": \"right\",\n\"Luxembourg\": \"right\",\n\"Madagascar\": \"right\",\n\"Maldives\": \"right\",\n\"Mali\": \"right\",\n\"Marshall Islands\": \"right\",\n\"Mauritania\": \"right\",\n\"Mexico\": \"right\",\n\"Micronesia\": \"right\",\n\"Moldova\": \"right\",\n\"Monaco\": \"right\",\n\"Mongolia\": \"right\",\n\"Montenegro\": \"right\",\n\"Morocco\": \"right\",\n\"Myanmar\": \"right\",\n\"Nauru\": \"right\",\n\"Netherlands\": \"right\",\n\"Nicaragua\": \"right\",\n\"Niger\": \"right\",\n\"Nigeria\": \"right\",\n\"North Korea\": \"right\",\n\"North Macedonia\": \"right\",\n\"Norway\": \"right\",\n\"Oman\": \"right\",\n\"Palau\": \"right\",\n\"Palestine\": \"right\",\n\"Panama\": \"right\",\n\"Paraguay\": \"right\",\n\"Peru\": \"right\",\n\"Philippines\": \"right\",\n\"Poland\": \"right\",\n\"Portugal\": \"right\",\n\"Qatar\": \"right\",\n\"Romania\": \"right\",\n\"Russia\": \"right\",\n\"Rwanda\": \"right\",\n\"San Marino\": \"right\",\n\"Sao Tome and Principe\": \"right\",\n\"Saudi Arabia\": \"right\",\n\"Senegal\": \"right\",\n\"Serbia\": \"right\",\n\"Seychelles\": \"right\",\n\"Sierra Leone\": \"right\",\n\"Slovakia\": \"right\",\n\"Slovenia\": \"right\",\n\"Somalia\": \"right\",\n\"South Korea\": \"right\",\n\"South Sudan\": \"right\",\n\"Spain\": \"right\",\n\"Sudan\": \"right\",\n\"Sweden\": \"right\",\n\"Switzerland\": \"right\",\n\"Syria\": \"right\",\n\"Tajikistan\": \"right\",\n\"Togo\": \"right\",\n\"Tunisia\": \"right\",\n\"Turkey\": \"right\",\n\"Turkmenistan\": \"right\",\n\"Ukraine\": \"right\",\n\"United Arab Emirates\": \"right\",\n\"United States\": \"right\",\n\"Uruguay\": \"right\",\n\"Uzbekistan\": \"right\",\n\"Vanuatu\": \"right\",\n\"Vatican City\": \"right\",\n\"Venezuela\": \"right\",\n\"Vietnam\": \"right\",\n\"Yemen\": \"right\"\n}\nFinally please respond with your guess for the top three countries in the format.\n[1] Top guess\n[2] second guess\n[3] third guess\n"
+            }
+            ]
+        },
+        ],
+        model="Llama-4-Maverick-17B-128E-Instruct-FP8",
+        stream=True,
+        temperature=0.6,
+        max_completion_tokens=2048,
+        top_p=0.9,
+        repetition_penalty=1,
+        tools=[
+        ],
+    )
+
+    for chunk in response:
+        print(chunk)
+
     processing_result = {"status": "success", "message": "Image received and 'know' function was called.", "processed_filepath": filepath}
     logger.info(f"'know' function processing complete for {filepath}. Result: {processing_result}")
     return processing_result
-    #
-    # --- END OF YOUR IMAGE PROCESSING LOGIC ---
-    #
 
 # --- API Endpoint ---
 @app.route('/api/push/know', methods=['POST'])
