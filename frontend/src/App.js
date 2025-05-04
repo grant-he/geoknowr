@@ -39,7 +39,7 @@ function App() {
                 if (done) break;
 
                 const chunk = decoder.decode(value, { stream: true });
-                console.log('map:', countryFlags);
+                console.log('map:', countryFlags, countryFlags.get(chunk.trim()));
                 console.log('Received chunk:', chunk);
                 locations.push(chunk);
 
@@ -50,7 +50,7 @@ function App() {
                 paragraph.style.textAlign = 'center'; // Center the paragraph element
                 if (locations.length === 1) {
                     heading.textContent = 'Country';
-                    const flag = countryFlags[chunk.trim()];
+                    const flag = countryFlags.get(chunk.trim());
                     paragraph.textContent = flag ? `${chunk.trim()} ${flag}` : chunk.trim();
                 } else if (locations.length === 2) {
                     heading.textContent = 'State';
@@ -91,7 +91,7 @@ function App() {
     }
 
     if (page === 'result') {
-        const flag = countryFlags[result[0]];
+        const flag = countryFlags.get(result[0]);
         return (
             <div className="result-page" style={{ textAlign: 'center' }}>
             <h1>Analysis Result</h1>
