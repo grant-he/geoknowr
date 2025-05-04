@@ -41,11 +41,13 @@ function App() {
     if (page === 'result') {
         return (
             <div className="result-page">
-                <h1>Analysis Result</h1>
-                <pre className="result-data">{JSON.stringify(result, null, 2)}</pre>
-                <button className="upload-again-btn" onClick={() => setPage('upload')}>
-                    Upload Another Image
-                </button>
+            <h1>Analysis Result</h1>
+            <pre className="result-data" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                {JSON.stringify(result, null, 2)}
+            </pre>
+            <button className="upload-again-btn" onClick={() => setPage('upload')}>
+                Upload Another Image
+            </button>
             </div>
         );
     }
