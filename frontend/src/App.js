@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { countryFlags } from './flag-map'
 import './App.css'
 
 function App() {
@@ -38,24 +39,28 @@ function App() {
                 if (done) break;
 
                 const chunk = decoder.decode(value, { stream: true });
+                console.log('map:', countryFlags);
                 console.log('Received chunk:', chunk);
                 locations.push(chunk);
 
                 // Heading
                 const heading = document.createElement('h2');
+                const paragraph = document.createElement('p');
                 heading.style.textAlign = 'center'; // Center the heading element
+                paragraph.style.textAlign = 'center'; // Center the paragraph element
                 if (locations.length === 1) {
                     heading.textContent = 'Country';
+                    const flag = countryFlags[chunk.trim()];
+                    paragraph.textContent = flag ? `${chunk.trim()} ${flag}` : chunk.trim();
                 } else if (locations.length === 2) {
                     heading.textContent = 'State';
+                    paragraph.textContent = chunk.trim();
                 } else {
                     heading.textContent = 'New Chunk Received';
+                    paragraph.textContent = chunk.trim();
                 }
 
                 // Paragraph
-                const paragraph = document.createElement('p');
-                paragraph.textContent = chunk.trim();
-                paragraph.style.textAlign = 'center'; // Center the paragraph element
 
                 infoDiv.appendChild(heading);
                 infoDiv.appendChild(paragraph);
@@ -86,6 +91,7 @@ function App() {
     }
 
     if (page === 'result') {
+        const flag = countryFlags[result[0]];
         return (
             <div className="result-page" style={{ textAlign: 'center' }}>
             <h1>Analysis Result</h1>
@@ -93,7 +99,7 @@ function App() {
                 {result[0] && (
                 <div>
                     <h2>Country</h2>
-                    <p>{result[0]}</p>
+                    <p>{flag ? `${result[0]} ${flag}` : result[0]}</p>
                 </div>
                 )}
                 {result[1] && (

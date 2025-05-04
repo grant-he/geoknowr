@@ -1,4 +1,4 @@
-const countryFlags = new Map([
+export const countryFlags = new Map([
     ["Afghanistan", "🇦🇫"],
     ["Åland Islands", "🇦🇽"],
     ["Albania", "🇦🇱"],
