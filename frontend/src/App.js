@@ -28,11 +28,10 @@ function App() {
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
-            let resultText = '';
+            let locations = [];
 
-            const loadingDiv = document.createElement('div');
-            loadingDiv.textContent = 'Processing: ';
-            document.body.appendChild(loadingDiv);
+            const infoDiv = document.createElement('div');
+            document.body.appendChild(infoDiv);
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -40,17 +39,35 @@ function App() {
 
                 const chunk = decoder.decode(value, { stream: true });
                 console.log('Received chunk:', chunk);
-                resultText += chunk;
-                loadingDiv.textContent = `Processing: ${resultText}`;
+                locations.push(chunk);
+
+                // Heading
+                const heading = document.createElement('h2');
+                heading.style.textAlign = 'center'; // Center the heading element
+                if (locations.length === 1) {
+                    heading.textContent = 'Country';
+                } else if (locations.length === 2) {
+                    heading.textContent = 'State';
+                } else {
+                    heading.textContent = 'New Chunk Received';
+                }
+
+                // Paragraph
+                const paragraph = document.createElement('p');
+                paragraph.textContent = chunk.trim();
+                paragraph.style.textAlign = 'center'; // Center the paragraph element
+
+                infoDiv.appendChild(heading);
+                infoDiv.appendChild(paragraph);
             }
 
-            loadingDiv.remove();
+            infoDiv.remove();
 
             if (!response.ok) {
                 throw new Error('Failed to analyze image');
             }
 
-            setResult(resultText);
+            setResult(locations);
             setPage('result');
         } catch (error) {
             console.error(error);
@@ -60,17 +77,40 @@ function App() {
     };
 
     if (page === 'loading') {
-        return <div>Loading...</div>;
+        return (
+            <h1>Analyzing...</h1>
+        );
     }
 
     if (page === 'result') {
         return (
-            <div className="result-page">
+            <div className="result-page" style={{ textAlign: 'center' }}>
             <h1>Analysis Result</h1>
-            <pre className="result-data" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
-                {JSON.stringify(result, null, 2)}
-            </pre>
-            <button className="upload-again-btn" onClick={() => setPage('upload')}>
+            <div>
+                {result[0] && (
+                <div>
+                    <h2>Country</h2>
+                    <p>{result[0]}</p>
+                </div>
+                )}
+                {result[1] && (
+                <div>
+                    <h2>State</h2>
+                    <p>{result[1]}</p>
+                </div>
+                )}
+                {result[1] && (
+                <div>
+                    <h2>Final Location</h2>
+                    <p>{result.join(', ')}</p>
+                </div>
+                )}
+            </div>
+            <button 
+                className="upload-again-btn" 
+                onClick={() => setPage('upload')} 
+                style={{ marginTop: '20px' }}
+            >
                 Upload Another Image
             </button>
             </div>
