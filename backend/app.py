@@ -48,6 +48,33 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
+def get_text_after_marker(line, marker="[1]"):
+    """
+    Extracts text from the first occurrence of a marker to the end of the line.
+
+    Args:
+        line (str): The string (line of text) to parse.
+        marker (str): The marker string to search for (e.g., "[1]").
+
+    Returns:
+        str: The text after the marker to the end of the line.
+             Returns an empty string if the marker is not found or
+             if there's no text after the marker.
+    """
+    # Find the starting index of the marker
+    marker_start_index = line.find(marker)
+
+    if marker_start_index != -1:
+        # Calculate the starting position of the text *after* the marker
+        text_start_position = marker_start_index + len(marker)
+        # Slice the string from that position to the end
+        shortened = line[text_start_position:]
+        shortened = shortened.split('\n', 1)[0]
+
+        return shortened.strip()
+    else:
+        # Marker not found in the line
+        return ""
 
 # --- Your Processing Function ---
 def know(filepath):
@@ -260,34 +287,35 @@ def know(filepath):
         "Vietnam": "right",
         "Yemen": "right",
     }
+
+    conversation = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{image}"},
+                },
+                {
+                    "type": "text",
+                    "text": (
+                        "Tell me about the distinctive features in this picture "
+                        "that help determine what country this is in. Determine "
+                        "which side of road people are driving on in the picture, "
+                        "then eliminate countries that don't match that "
+                        "information according to the following json dictionary:\n"
+                        f"{json.dumps(road_map)}\n"
+                        "Finally please respond with your guess for the top three "
+                        "countries in the format.\n"
+                        "[1] Top guess\n[2] second guess\n[3] third guess\n"
+                    ),
+                },
+            ],
+        },
+    ]
     response = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {"url": f"data:image/png;base64,{image}"},
-                    },
-                    {
-                        "type": "text",
-                        "text": (
-                            "Tell me about the distinctive features in this picture "
-                            "that help determine what country this is in. Determine "
-                            "which side of road people are driving on in the picture, "
-                            "then eliminate countries that don't match that "
-                            "information according to the following json dictionary:\n"
-                            f"{json.dumps(road_map)}\n"
-                            "Finally please respond with your guess for the top three "
-                            "countries in the format.\n"
-                            "[1] Top guess\n[2] second guess\n[3] third guess\n"
-                        ),
-                    },
-                ],
-            },
-        ],
+        messages=conversation,
         model="Llama-4-Maverick-17B-128E-Instruct-FP8",
-        # stream=True,
         temperature=0.6,
         max_completion_tokens=2048,
         top_p=0.9,
@@ -295,13 +323,50 @@ def know(filepath):
         tools=[],
     )
 
-    print(response.completion_message.content.text)
-    # for chunk in response:
-    #     print(chunk)
+    country_full_text = response.completion_message.content.text
+    print(country_full_text)
+
+    conversation.append({
+        "role": "assistant", 
+        "content": country_full_text,
+        "stop_reason": response.completion_message.stop_reason,
+    })
+
+    top_country = get_text_after_marker(country_full_text)
+    print(top_country)
+
+    conversation.append({
+        "role": "user",
+        "content": [
+            {
+                "type": "text",
+                "text": (
+                    f"Now let's go with the most likely country. Can you tell me what are the three most likely states or provinces this is located in in {top_country}? Use the same format."
+            ),
+            },
+        ],
+    })
+
+    response = client.chat.completions.create(
+        messages=conversation,
+        model="Llama-4-Maverick-17B-128E-Instruct-FP8",
+        temperature=0.6,
+        max_completion_tokens=2048,
+        top_p=0.9,
+        repetition_penalty=1,
+        tools=[],
+    )
+
+    subdivision_full_text = response.completion_message.content.text
+    print(subdivision_full_text)
+
+    top_subdivision = get_text_after_marker(subdivision_full_text)
+    print(top_subdivision)
+
 
     processing_result = {
         "status": "success",
-        "message": response.completion_message.content.text,
+        "message": f"Country: {top_country}, Subdivision: {top_subdivision}",
         "processed_filepath": filepath,
     }
     logger.info(
