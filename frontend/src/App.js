@@ -128,8 +128,8 @@ function App() {
 
     return (
         <div className="upload-page" style={{ textAlign: "center", height: "50vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <h1>Let's explore the world!</h1>
-            <p>Through llms...</p>
+            <h1>GeoKnowr</h1>
+            <p>Let's explore the world! ~through LLMs~</p>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <img src="images/map.png" style={{ maxHeight: "250px" }} />
                 <div style={{ marginBottom: "10px" }}>
