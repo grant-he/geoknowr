@@ -12,9 +12,12 @@ function App() {
         setPage('loading'); // Transition to the loading page
 
         try {
-            const response = await fetch('http://localhost:5000/analyze_image', {
+            const formDataWithField = new FormData();
+            formDataWithField.append('image', formData.get('image'));
+
+            const response = await fetch('http://127.0.0.1:8000/api/push/know', {
                 method: 'POST',
-                body: formData,
+                body: formDataWithField,
             });
 
             if (!response.ok) {

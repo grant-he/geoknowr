@@ -140,4 +140,4 @@ if __name__ == '__main__':
     logger.info("Starting Flask server...")
     # For production, use a proper WSGI server like Gunicorn or uWSGI
     # Example: gunicorn -w 4 -b 0.0.0.0:5000 app:app
-    app.run(host='0.0.0.0', port=5000, debug=True) # Set debug=False for production
+    app.run(host='0.0.0.0', port=8000, debug=True) # Set debug=False for production
