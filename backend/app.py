@@ -1,10 +1,12 @@
 import os
+import time
 import json
 import base64
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response, stream_with_context
 from werkzeug.utils import secure_filename
 from llama_api_client import LlamaAPIClient
+from flask_cors import CORS
 
 client = LlamaAPIClient(
     base_url="https://api.llama.com/v1/",
@@ -22,6 +24,7 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}  # Allowed image extensions
 
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB max upload size
 
@@ -409,7 +412,8 @@ def handle_image_push():
                 logger.info(f"Image saved successfully to: {filepath}")
 
                 # Call your know(filepath) function
-                processing_status = know(filepath)
+                # processing_status = know(filepath)
+                return Response(generate_plain_text(), mimetype='text/plain')
 
                 # You can customize the response based on what `know` returns
                 if processing_status.get("status") == "success":
@@ -458,9 +462,6 @@ def handle_image_push():
     return jsonify({"error": "Method not allowed"}), 405
 
 
-# --- Main Execution ---
 if __name__ == "__main__":
     logger.info("Starting Flask server...")
-    # For production, use a proper WSGI server like Gunicorn or uWSGI
-    # Example: gunicorn -w 4 -b 0.0.0.0:5000 app:app
-    app.run(host="0.0.0.0", port=8000, debug=True)  # Set debug=False for production
+    app.run(host="0.0.0.0", port=8000, debug=True, threaded=True)  # Set debug=False for production

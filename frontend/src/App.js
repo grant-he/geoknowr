@@ -15,18 +15,43 @@ function App() {
             const formDataWithField = new FormData();
             formDataWithField.append('image', formData.get('image'));
 
-            const response = await fetch('/api/push/know', {
+            console.log('Sending request to /api/push/know with form data:');
+            const response = await fetch('http://localhost:8000/api/push/know', {
                 method: 'POST',
                 body: formDataWithField,
             });
+            console.log('Response status:', response.status);
+
+            if (!response.body) {
+                throw new Error('ReadableStream not supported in this browser.');
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let resultText = '';
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.textContent = 'Processing: ';
+            document.body.appendChild(loadingDiv);
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                console.log('Received chunk:', chunk);
+                resultText += chunk;
+                loadingDiv.textContent = `Processing: ${resultText}`;
+            }
+
+            loadingDiv.remove();
 
             if (!response.ok) {
                 throw new Error('Failed to analyze image');
             }
 
-            const data = await response.json();
-            setResult(data); // Save the result
-            setPage('result'); // Transition to the result page
+            setResult(resultText);
+            setPage('result');
         } catch (error) {
             console.error(error);
             alert('An error occurred while analyzing the image.');
