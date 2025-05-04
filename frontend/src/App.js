@@ -15,7 +15,7 @@ function App() {
             const formDataWithField = new FormData();
             formDataWithField.append('image', formData.get('image'));
 
-            const response = await fetch('http://127.0.0.1:8000/api/push/know', {
+            const response = await fetch('/api/push/know', {
                 method: 'POST',
                 body: formDataWithField,
             });
