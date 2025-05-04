@@ -127,30 +127,29 @@ function App() {
     }
 
     return (
-        <div>
-            <h1>Upload an Image</h1>
-            <form 
-                onSubmit={handleSubmit} 
-                encType="multipart/form-data"
-            >
-                <div>
+        <div className="upload-page" style={{ textAlign: "center", height: "50vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <h1>Let's explore the world!</h1>
+            <p>Through llms...</p>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <img src="images/map.png" style={{ maxHeight: "250px" }} />
+                <div style={{ marginBottom: "10px" }}>
                     <label htmlFor="imageUpload">
-                        Choose an image:
+                        Give me an image that you're curious about!
                     </label>
                 </div>
-                <div>
-                    <input 
-                        type="file" 
-                        id="imageUpload" 
-                        name="image" 
-                        accept="image/*" 
-                        required 
+
+                <div style={{ marginBottom: "10px" }}>
+                    <input
+                        type="file"
+                        id="imageUpload"
+                        name="image"
+                        accept="image/*"
+                        required
                     />
                 </div>
+
                 <div>
-                    <button type="submit">
-                        Upload
-                    </button>
+                    <button type="submit">Upload</button>
                 </div>
             </form>
         </div>
