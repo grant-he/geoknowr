@@ -1,4 +1,5 @@
 import os
+import json
 import base64
 import logging
 from flask import Flask, request, jsonify
@@ -11,16 +12,18 @@ client = LlamaAPIClient(
 )
 
 # --- Configuration ---
-UPLOAD_FOLDER = 'api_uploads'  # Folder where uploaded images will be stored for processing
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'} # Allowed image extensions
+UPLOAD_FOLDER = (
+    "api_uploads"  # Folder where uploaded images will be stored for processing
+)
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}  # Allowed image extensions
 # Get current date for logging or other purposes if needed
 # from datetime import datetime
 # CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
 
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB max upload size
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB max upload size
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -38,12 +41,13 @@ except OSError as e:
 # --- Helper Function ---
 def allowed_file(filename):
     """Checks if the uploaded file has an allowed extension."""
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
+
 
 # --- Your Processing Function ---
 def know(filepath):
@@ -56,24 +60,231 @@ def know(filepath):
     """
     logger.info(f"Function 'know' called with filepath: {filepath}")
     image = encode_image(filepath)
-    
+
+    road_map = {
+        "Botswana": "left",
+        "Eswatini": "left",
+        "Kenya": "left",
+        "Lesotho": "left",
+        "Malawi": "left",
+        "Mauritius": "left",
+        "Mozambique": "left",
+        "Namibia": "left",
+        "South Africa": "left",
+        "Tanzania": "left",
+        "Uganda": "left",
+        "Zambia": "left",
+        "Zimbabwe": "left",
+        "Bangladesh": "left",
+        "Bhutan": "left",
+        "Brunei": "left",
+        "Hong Kong": "left",
+        "India": "left",
+        "Indonesia": "left",
+        "Japan": "left",
+        "Malaysia": "left",
+        "Nepal": "left",
+        "Pakistan": "left",
+        "Singapore": "left",
+        "Sri Lanka": "left",
+        "Thailand": "left",
+        "Timor-Leste": "left",
+        "Cyprus": "left",
+        "Ireland": "left",
+        "Malta": "left",
+        "United Kingdom": "left",
+        "Australia": "left",
+        "Fiji": "left",
+        "Kiribati": "left",
+        "New Zealand": "left",
+        "Papua New Guinea": "left",
+        "Samoa": "left",
+        "Solomon Islands": "left",
+        "Tonga": "left",
+        "Tuvalu": "left",
+        "Barbados": "left",
+        "Bahamas": "left",
+        "Jamaica": "left",
+        "Saint Kitts and Nevis": "left",
+        "Saint Lucia": "left",
+        "Saint Vincent and the Grenadines": "left",
+        "Trinidad and Tobago": "left",
+        "Macau": "left",
+        "Suriname": "left",
+        "Afghanistan": "right",
+        "Albania": "right",
+        "Algeria": "right",
+        "Andorra": "right",
+        "Angola": "right",
+        "Antigua and Barbuda": "right",
+        "Argentina": "right",
+        "Armenia": "right",
+        "Austria": "right",
+        "Azerbaijan": "right",
+        "Bahrain": "right",
+        "Belarus": "right",
+        "Belgium": "right",
+        "Belize": "right",
+        "Benin": "right",
+        "Bolivia": "right",
+        "Bosnia and Herzegovina": "right",
+        "Brazil": "right",
+        "Bulgaria": "right",
+        "Burkina Faso": "right",
+        "Burundi": "right",
+        "Cabo Verde": "right",
+        "Cambodia": "right",
+        "Cameroon": "right",
+        "Canada": "right",
+        "Central African Republic": "right",
+        "Chad": "right",
+        "Chile": "right",
+        "China": "right",
+        "Colombia": "right",
+        "Comoros": "right",
+        "Congo (Congo-Brazzaville)": "right",
+        "Costa Rica": "right",
+        "Croatia": "right",
+        "Cuba": "right",
+        "Czech Republic": "right",
+        "Democratic Republic of the Congo": "right",
+        "Denmark": "right",
+        "Djibouti": "right",
+        "Dominica": "right",
+        "Dominican Republic": "right",
+        "Ecuador": "right",
+        "Egypt": "right",
+        "El Salvador": "right",
+        "Equatorial Guinea": "right",
+        "Eritrea": "right",
+        "Estonia": "right",
+        "Ethiopia": "right",
+        "Finland": "right",
+        "France": "right",
+        "Gabon": "right",
+        "Gambia": "right",
+        "Georgia": "right",
+        "Germany": "right",
+        "Ghana": "right",
+        "Greece": "right",
+        "Grenada": "right",
+        "Guatemala": "right",
+        "Guinea": "right",
+        "Guinea-Bissau": "right",
+        "Guyana": "right",
+        "Haiti": "right",
+        "Honduras": "right",
+        "Hungary": "right",
+        "Iceland": "right",
+        "Iran": "right",
+        "Iraq": "right",
+        "Israel": "right",
+        "Italy": "right",
+        "Ivory Coast": "right",
+        "Jordan": "right",
+        "Kazakhstan": "right",
+        "Kuwait": "right",
+        "Kyrgyzstan": "right",
+        "Laos": "right",
+        "Latvia": "right",
+        "Lebanon": "right",
+        "Liberia": "right",
+        "Libya": "right",
+        "Liechtenstein": "right",
+        "Lithuania": "right",
+        "Luxembourg": "right",
+        "Madagascar": "right",
+        "Maldives": "right",
+        "Mali": "right",
+        "Marshall Islands": "right",
+        "Mauritania": "right",
+        "Mexico": "right",
+        "Micronesia": "right",
+        "Moldova": "right",
+        "Monaco": "right",
+        "Mongolia": "right",
+        "Montenegro": "right",
+        "Morocco": "right",
+        "Myanmar": "right",
+        "Nauru": "right",
+        "Netherlands": "right",
+        "Nicaragua": "right",
+        "Niger": "right",
+        "Nigeria": "right",
+        "North Korea": "right",
+        "North Macedonia": "right",
+        "Norway": "right",
+        "Oman": "right",
+        "Palau": "right",
+        "Palestine": "right",
+        "Panama": "right",
+        "Paraguay": "right",
+        "Peru": "right",
+        "Philippines": "right",
+        "Poland": "right",
+        "Portugal": "right",
+        "Qatar": "right",
+        "Romania": "right",
+        "Russia": "right",
+        "Rwanda": "right",
+        "San Marino": "right",
+        "Sao Tome and Principe": "right",
+        "Saudi Arabia": "right",
+        "Senegal": "right",
+        "Serbia": "right",
+        "Seychelles": "right",
+        "Sierra Leone": "right",
+        "Slovakia": "right",
+        "Slovenia": "right",
+        "Somalia": "right",
+        "South Korea": "right",
+        "South Sudan": "right",
+        "Spain": "right",
+        "Sudan": "right",
+        "Sweden": "right",
+        "Switzerland": "right",
+        "Syria": "right",
+        "Tajikistan": "right",
+        "Togo": "right",
+        "Tunisia": "right",
+        "Turkey": "right",
+        "Turkmenistan": "right",
+        "Ukraine": "right",
+        "United Arab Emirates": "right",
+        "United States": "right",
+        "Uruguay": "right",
+        "Uzbekistan": "right",
+        "Vanuatu": "right",
+        "Vatican City": "right",
+        "Venezuela": "right",
+        "Vietnam": "right",
+        "Yemen": "right",
+    }
     response = client.chat.completions.create(
         messages=[
-        {
-            "role": "user",
-            "content": [
             {
-                "type": "image_url",
-                "image_url": {
-                "url": f"data:image/png;base64,{image}"
-                }
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/png;base64,{image}"},
+                    },
+                    {
+                        "type": "text",
+                        "text": (
+                            "Tell me about the distinctive features in this picture "
+                            "that help determine what country this is in. Determine "
+                            "which side of road people are driving on in the picture, "
+                            "then eliminate countries that don't match that "
+                            "information according to the following json dictionary:\n"
+                            f"{json.dumps(road_map)}\n"
+                            "Finally please respond with your guess for the top three "
+                            "countries in the format.\n"
+                            "[1] Top guess\n[2] second guess\n[3] third guess\n"
+                        ),
+                    },
+                ],
             },
-            {
-                "type": "text",
-                "text": "Tell me about the distinctive features in this picture that help determine what country this is in. Determine which side of road people are driving on in the picture, then eliminate countries that don'\''t match that information according to the following json dictionary:\n{\n\"Botswana\": \"left\",\n\"Eswatini\": \"left\",\n\"Kenya\": \"left\",\n\"Lesotho\": \"left\",\n\"Malawi\": \"left\",\n\"Mauritius\": \"left\",\n\"Mozambique\": \"left\",\n\"Namibia\": \"left\",\n\"South Africa\": \"left\",\n\"Tanzania\": \"left\",\n\"Uganda\": \"left\",\n\"Zambia\": \"left\",\n\"Zimbabwe\": \"left\",\n\"Bangladesh\": \"left\",\n\"Bhutan\": \"left\",\n\"Brunei\": \"left\",\n\"Hong Kong\": \"left\",\n\"India\": \"left\",\n\"Indonesia\": \"left\",\n\"Japan\": \"left\",\n\"Malaysia\": \"left\",\n\"Nepal\": \"left\",\n\"Pakistan\": \"left\",\n\"Singapore\": \"left\",\n\"Sri Lanka\": \"left\",\n\"Thailand\": \"left\",\n\"Timor-Leste\": \"left\",\n\"Cyprus\": \"left\",\n\"Ireland\": \"left\",\n\"Malta\": \"left\",\n\"United Kingdom\": \"left\",\n\"Australia\": \"left\",\n\"Fiji\": \"left\",\n\"Kiribati\": \"left\",\n\"New Zealand\": \"left\",\n\"Papua New Guinea\": \"left\",\n\"Samoa\": \"left\",\n\"Solomon Islands\": \"left\",\n\"Tonga\": \"left\",\n\"Tuvalu\": \"left\",\n\"Barbados\": \"left\",\n\"Bahamas\": \"left\",\n\"Jamaica\": \"left\",\n\"Saint Kitts and Nevis\": \"left\",\n\"Saint Lucia\": \"left\",\n\"Saint Vincent and the Grenadines\": \"left\",\n\"Trinidad and Tobago\": \"left\",\n\"Macau\": \"left\",\n\"Suriname\": \"left\",\n\"Afghanistan\": \"right\",\n\"Albania\": \"right\",\n\"Algeria\": \"right\",\n\"Andorra\": \"right\",\n\"Angola\": \"right\",\n\"Antigua and Barbuda\": \"right\",\n\"Argentina\": \"right\",\n\"Armenia\": \"right\",\n\"Austria\": \"right\",\n\"Azerbaijan\": \"right\",\n\"Bahrain\": \"right\",\n\"Belarus\": \"right\",\n\"Belgium\": \"right\",\n\"Belize\": \"right\",\n\"Benin\": \"right\",\n\"Bolivia\": \"right\",\n\"Bosnia and Herzegovina\": \"right\",\n\"Brazil\": \"right\",\n\"Bulgaria\": \"right\",\n\"Burkina Faso\": \"right\",\n\"Burundi\": \"right\",\n\"Cabo Verde\": \"right\",\n\"Cambodia\": \"right\",\n\"Cameroon\": \"right\",\n\"Canada\": \"right\",\n\"Central African Republic\": \"right\",\n\"Chad\": \"right\",\n\"Chile\": \"right\",\n\"China\": \"right\",\n\"Colombia\": \"right\",\n\"Comoros\": \"right\",\n\"Congo (Congo-Brazzaville)\": \"right\",\n\"Costa Rica\": \"right\",\n\"Croatia\": \"right\",\n\"Cuba\": \"right\",\n\"Czech Republic\": \"right\",\n\"Democratic Republic of the Congo\": \"right\",\n\"Denmark\": \"right\",\n\"Djibouti\": \"right\",\n\"Dominica\": \"right\",\n\"Dominican Republic\": \"right\",\n\"Ecuador\": \"right\",\n\"Egypt\": \"right\",\n\"El Salvador\": \"right\",\n\"Equatorial Guinea\": \"right\",\n\"Eritrea\": \"right\",\n\"Estonia\": \"right\",\n\"Ethiopia\": \"right\",\n\"Finland\": \"right\",\n\"France\": \"right\",\n\"Gabon\": \"right\",\n\"Gambia\": \"right\",\n\"Georgia\": \"right\",\n\"Germany\": \"right\",\n\"Ghana\": \"right\",\n\"Greece\": \"right\",\n\"Grenada\": \"right\",\n\"Guatemala\": \"right\",\n\"Guinea\": \"right\",\n\"Guinea-Bissau\": \"right\",\n\"Guyana\": \"right\",\n\"Haiti\": \"right\",\n\"Honduras\": \"right\",\n\"Hungary\": \"right\",\n\"Iceland\": \"right\",\n\"Iran\": \"right\",\n\"Iraq\": \"right\",\n\"Israel\": \"right\",\n\"Italy\": \"right\",\n\"Ivory Coast\": \"right\",\n\"Jordan\": \"right\",\n\"Kazakhstan\": \"right\",\n\"Kuwait\": \"right\",\n\"Kyrgyzstan\": \"right\",\n\"Laos\": \"right\",\n\"Latvia\": \"right\",\n\"Lebanon\": \"right\",\n\"Liberia\": \"right\",\n\"Libya\": \"right\",\n\"Liechtenstein\": \"right\",\n\"Lithuania\": \"right\",\n\"Luxembourg\": \"right\",\n\"Madagascar\": \"right\",\n\"Maldives\": \"right\",\n\"Mali\": \"right\",\n\"Marshall Islands\": \"right\",\n\"Mauritania\": \"right\",\n\"Mexico\": \"right\",\n\"Micronesia\": \"right\",\n\"Moldova\": \"right\",\n\"Monaco\": \"right\",\n\"Mongolia\": \"right\",\n\"Montenegro\": \"right\",\n\"Morocco\": \"right\",\n\"Myanmar\": \"right\",\n\"Nauru\": \"right\",\n\"Netherlands\": \"right\",\n\"Nicaragua\": \"right\",\n\"Niger\": \"right\",\n\"Nigeria\": \"right\",\n\"North Korea\": \"right\",\n\"North Macedonia\": \"right\",\n\"Norway\": \"right\",\n\"Oman\": \"right\",\n\"Palau\": \"right\",\n\"Palestine\": \"right\",\n\"Panama\": \"right\",\n\"Paraguay\": \"right\",\n\"Peru\": \"right\",\n\"Philippines\": \"right\",\n\"Poland\": \"right\",\n\"Portugal\": \"right\",\n\"Qatar\": \"right\",\n\"Romania\": \"right\",\n\"Russia\": \"right\",\n\"Rwanda\": \"right\",\n\"San Marino\": \"right\",\n\"Sao Tome and Principe\": \"right\",\n\"Saudi Arabia\": \"right\",\n\"Senegal\": \"right\",\n\"Serbia\": \"right\",\n\"Seychelles\": \"right\",\n\"Sierra Leone\": \"right\",\n\"Slovakia\": \"right\",\n\"Slovenia\": \"right\",\n\"Somalia\": \"right\",\n\"South Korea\": \"right\",\n\"South Sudan\": \"right\",\n\"Spain\": \"right\",\n\"Sudan\": \"right\",\n\"Sweden\": \"right\",\n\"Switzerland\": \"right\",\n\"Syria\": \"right\",\n\"Tajikistan\": \"right\",\n\"Togo\": \"right\",\n\"Tunisia\": \"right\",\n\"Turkey\": \"right\",\n\"Turkmenistan\": \"right\",\n\"Ukraine\": \"right\",\n\"United Arab Emirates\": \"right\",\n\"United States\": \"right\",\n\"Uruguay\": \"right\",\n\"Uzbekistan\": \"right\",\n\"Vanuatu\": \"right\",\n\"Vatican City\": \"right\",\n\"Venezuela\": \"right\",\n\"Vietnam\": \"right\",\n\"Yemen\": \"right\"\n}\nFinally please respond with your guess for the top three countries in the format.\n[1] Top guess\n[2] second guess\n[3] third guess\n"
-            }
-            ]
-        },
         ],
         model="Llama-4-Maverick-17B-128E-Instruct-FP8",
         # stream=True,
@@ -81,44 +292,52 @@ def know(filepath):
         max_completion_tokens=2048,
         top_p=0.9,
         repetition_penalty=1,
-        tools=[
-        ],
+        tools=[],
     )
 
     print(response.completion_message.content.text)
     # for chunk in response:
     #     print(chunk)
-    
-    processing_result = {"status": "success", "message": response.completion_message.content.text, "processed_filepath": filepath}
-    logger.info(f"'know' function processing complete for {filepath}. Result: {processing_result}")
+
+    processing_result = {
+        "status": "success",
+        "message": response.completion_message.content.text,
+        "processed_filepath": filepath,
+    }
+    logger.info(
+        f"'know' function processing complete for {filepath}. Result: {processing_result}"
+    )
     return processing_result
 
+
 # --- API Endpoint ---
-@app.route('/api/push/know', methods=['POST'])
+@app.route("/api/push/know", methods=["POST"])
 def handle_image_push():
     """
     API endpoint to receive an image file.
     It expects a multipart/form-data request with a file part named 'image'.
     """
-    logger.info(f"Received request at /api/push/know at {app.config.get('CURRENT_DATE', 'N/A')}") # Example of using date
+    logger.info(
+        f"Received request at /api/push/know at {app.config.get('CURRENT_DATE', 'N/A')}"
+    )  # Example of using date
 
-    if request.method == 'POST':
+    if request.method == "POST":
         # Check if the post request has the file part
-        if 'image' not in request.files: # Ensure the key matches what the client sends
+        if "image" not in request.files:  # Ensure the key matches what the client sends
             logger.warning("No 'image' part in the request files.")
             return jsonify({"error": "No image part in the request"}), 400
 
-        file = request.files['image']
+        file = request.files["image"]
 
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
-        if file.filename == '':
+        if file.filename == "":
             logger.warning("No selected file (filename is empty).")
             return jsonify({"error": "No selected file"}), 400
 
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename) # Sanitize the filename
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filename = secure_filename(file.filename)  # Sanitize the filename
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
             try:
                 file.save(filepath)
@@ -129,32 +348,54 @@ def handle_image_push():
 
                 # You can customize the response based on what `know` returns
                 if processing_status.get("status") == "success":
-                    return jsonify({
-                        "message": "Image uploaded and processed successfully.",
-                        "filename": filename,
-                        "details": processing_status.get("message", "")
-                    }), 200
+                    return (
+                        jsonify(
+                            {
+                                "message": "Image uploaded and processed successfully.",
+                                "filename": filename,
+                                "details": processing_status.get("message", ""),
+                            }
+                        ),
+                        200,
+                    )
                 else:
                     # If know() indicates an error during its processing
-                    return jsonify({
-                        "error": "Image uploaded, but processing failed.",
-                        "filename": filename,
-                        "details": processing_status.get("message", "Unknown processing error.")
-                    }), 500
+                    return (
+                        jsonify(
+                            {
+                                "error": "Image uploaded, but processing failed.",
+                                "filename": filename,
+                                "details": processing_status.get(
+                                    "message", "Unknown processing error."
+                                ),
+                            }
+                        ),
+                        500,
+                    )
 
             except Exception as e:
-                logger.error(f"Error saving file or in 'know' function: {e}", exc_info=True)
+                logger.error(
+                    f"Error saving file or in 'know' function: {e}", exc_info=True
+                )
                 return jsonify({"error": f"An error occurred: {str(e)}"}), 500
         else:
             logger.warning(f"File type not allowed: {file.filename}")
-            return jsonify({"error": f"File type not allowed. Allowed types are: {', '.join(ALLOWED_EXTENSIONS)}"}), 400
+            return (
+                jsonify(
+                    {
+                        "error": f"File type not allowed. Allowed types are: {', '.join(ALLOWED_EXTENSIONS)}"
+                    }
+                ),
+                400,
+            )
 
     # Should not be reached if only POST is allowed, but as a fallback:
     return jsonify({"error": "Method not allowed"}), 405
 
+
 # --- Main Execution ---
-if __name__ == '__main__':
+if __name__ == "__main__":
     logger.info("Starting Flask server...")
     # For production, use a proper WSGI server like Gunicorn or uWSGI
     # Example: gunicorn -w 4 -b 0.0.0.0:5000 app:app
-    app.run(host='0.0.0.0', port=8000, debug=True) # Set debug=False for production
+    app.run(host="0.0.0.0", port=8000, debug=True)  # Set debug=False for production
