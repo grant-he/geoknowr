@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css'
 
 function App() {
     const [page, setPage] = useState('upload'); // 'upload', 'loading', 'result'
@@ -36,10 +37,12 @@ function App() {
 
     if (page === 'result') {
         return (
-            <div>
+            <div className="result-page">
                 <h1>Analysis Result</h1>
-                <pre>{JSON.stringify(result, null, 2)}</pre>
-                <button onClick={() => setPage('upload')}>Upload Another Image</button>
+                <pre className="result-data">{JSON.stringify(result, null, 2)}</pre>
+                <button className="upload-again-btn" onClick={() => setPage('upload')}>
+                    Upload Another Image
+                </button>
             </div>
         );
     }
