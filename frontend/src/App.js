@@ -53,7 +53,7 @@ function App() {
                     const flag = countryFlags.get(chunk.trim());
                     paragraph.textContent = flag ? `${chunk.trim()} ${flag}` : chunk.trim();
                 } else if (locations.length === 2) {
-                    heading.textContent = 'State';
+                    heading.textContent = 'Subdivision';
                     paragraph.textContent = chunk.trim();
                 } else {
                     heading.textContent = 'New Chunk Received';
@@ -104,7 +104,7 @@ function App() {
                 )}
                 {result[1] && (
                 <div>
-                    <h2>State</h2>
+                    <h2>Subdivision</h2>
                     <p>{result[1]}</p>
                 </div>
                 )}
